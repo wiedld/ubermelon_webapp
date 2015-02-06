@@ -12,7 +12,6 @@ div.navbar-header img {
 
 div.melon-summary {
     display: inline-block;
-
     width: 300px;
     vertical-align: top;
     margin-right: 20px;
@@ -71,5 +70,12 @@ div.cart {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-img.melon-cart {
+
+/*<div class="navbar navbar-inverse navbar-static-top">
+<div class="container">
+<div class="navbar-collapse collapse">
+<ul class="nav navbar-nav navbar-right">*/
+
+div.navbar div.container div.collapse ul.navbar-right img.melon-cart {
+  height: 15px;
 }
