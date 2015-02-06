@@ -30,8 +30,8 @@ def show_melon(id):
     session[melon.id]= list()
     session[melon.id].append(melon.common_name)
     session[melon.id].append(melon.price)
-    # and save the latest melon we looked at, in order to add to cart
-    session["current"] = melon.id
+    # # and save the latest melon we looked at, in order to add to cart
+    # session["current"] = melon.id
     return render_template("melon_details.html",
                   display_melon = melon)
 
@@ -40,8 +40,10 @@ def shopping_cart():
     """TODO: Display the contents of the shopping cart. The shopping cart is a
     list held in the session that contains all the melons to be added. Check
     accompanying screenshots for details."""
-
-    return render_template("cart.html")
+    list_of_subtotals = [session[melon][3] for melon in session if len(session[melon])>2]
+    order_total = sum(list_of_subtotals)
+    order_total = "$%.2f" % order_total
+    return render_template("cart.html", total=order_total)
 
 @app.route("/add_to_cart/<int:id>")
 def add_to_cart(id):
@@ -52,7 +54,8 @@ def add_to_cart(id):
     "Successfully added to cart" """
     ## what we have now: a session dict with list of id's.
     # the values are a list with: [common_name, price]
-    key = str(session["current"])
+    # the code below turn the dictionary into id(key): [common_name,price,qty,subtotal]
+    key = str(id)
     price_index = 1
     qty_index = 2
     subtotal_index = 3
@@ -65,6 +68,7 @@ def add_to_cart(id):
         session[key][qty_index] += 1
         qty = session[key][qty_index]
         session[key][subtotal_index] = qty * price 
+    print type(session[key])
     flash("Successfully added to cart.")
     return redirect("/cart")
     # return "Oops! This needs to be implemented!"
