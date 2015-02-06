@@ -1,13 +1,6 @@
 {% extends 'base.html' %}
 {% block body %}
 
-<script>
-    var typetest1 = typeof(session);
-    console.log(typetest1);
-
-    var typetest3 = typeof(session[melon]);
-    console.log(typetest3);
-</script>
 <table class="table table-striped">
     <tr><th>Melon Name</th><th>Quantity</th><th>Price</th><th>Total</th></tr>
     {% for melon in session %}

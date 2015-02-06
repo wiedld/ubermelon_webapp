@@ -30,8 +30,6 @@ def show_melon(id):
     session[melon.id]= list()
     session[melon.id].append(melon.common_name)
     session[melon.id].append(melon.price)
-    # # and save the latest melon we looked at, in order to add to cart
-    # session["current"] = melon.id
     return render_template("melon_details.html",
                   display_melon = melon)
 
