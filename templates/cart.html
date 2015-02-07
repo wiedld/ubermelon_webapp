@@ -3,10 +3,10 @@
 
 <table class="table table-striped">
     <tr><th>Melon Name</th><th>Quantity</th><th>Price</th><th>Total</th></tr>
-    {% for melon in session %}
+    {% for melon in session['cart'].values() %}
         <tr>
-            {% if session[melon]|length > 3 %}
-                <td>{{session[melon][0]}}</td><td>{{session[melon][2]}}</td><td>${{'%0.2f'%session[melon][1]|float}}</td><td>${{'%0.2f'%session[melon][3]|float}}</td>
+            {% if melon|length > 3 %}
+                <td>{{melon[0]}}</td><td>{{melon[2]}}</td><td>${{'%0.2f'%melon[1]|float}}</td><td>${{'%0.2f'%melon[3]|float}}</td>
             {% endif %}
         </tr>
     {% endfor %}

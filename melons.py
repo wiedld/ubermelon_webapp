@@ -25,11 +25,13 @@ def show_melon(id):
     option to buy the melon."""
     melon = model.get_melon_by_id(id)
     print melon
-    # we have all the database info here, in var melon.  
-    # Why not save the id, name, and price of each melon we look at? 
-    session[melon.id]= list()
-    session[melon.id].append(melon.common_name)
-    session[melon.id].append(melon.price)
+    # in session dict, have dict 'cart'  
+    # values in dict cart are {id: [name,price]} 
+    if 'cart' not in session:
+        session['cart'] = {}
+    session['cart'][melon.id]= list()
+    session['cart'][melon.id].append(melon.common_name)
+    session['cart'][melon.id].append(melon.price)
     return render_template("melon_details.html",
                   display_melon = melon)
 
@@ -38,7 +40,9 @@ def shopping_cart():
     """TODO: Display the contents of the shopping cart. The shopping cart is a
     list held in the session that contains all the melons to be added. Check
     accompanying screenshots for details."""
-    list_of_subtotals = [session[melon][3] for melon in session if len(session[melon])>2]
+    if 'cart' not in session:
+        session['cart'] = {}
+    list_of_subtotals = [session['cart'][melon][3] for melon in session['cart'] if len(session['cart'][melon])>2]
     order_total = sum(list_of_subtotals)
     order_total = "$%.2f" % order_total
     return render_template("cart.html", total=order_total)
@@ -50,23 +54,22 @@ def add_to_cart(id):
     """Intended behavior: when a melon is added to a cart, redirect them to the
     shopping cart page, while displaying the message
     "Successfully added to cart" """
-    ## what we have now: a session dict with list of id's.
-    # the values are a list with: [common_name, price]
-    # the code below turn the dictionary into id(key): [common_name,price,qty,subtotal]
+    ## in session dict, have dict 'cart'  
+    # vvalues in dict cart are  {id: [name,price] } 
+    # the code below adds tp the dict cart. {id(key): [common_name,price,qty,subtotal]}
     key = str(id)
     price_index = 1
     qty_index = 2
     subtotal_index = 3
-    price = session[key][price_index]
+    price = session['cart'][key][price_index]
     # see if there is any quantities add (a.k.a. is the list of values 2 or 4?)
-    if len(session[key]) == 2:   
-        session[key].append(1)     # add a qty of 1
-        session[key].append(price*1)    # make the subtotal index exist
+    if len(session['cart'][key]) == 2:   
+        session['cart'][key].append(1)     # add a qty of 1
+        session['cart'][key].append(price*1)    # make the subtotal index exist
     else:
-        session[key][qty_index] += 1
-        qty = session[key][qty_index]
-        session[key][subtotal_index] = qty * price 
-    print type(session[key])
+        session['cart'][key][qty_index] += 1
+        qty = session['cart'][key][qty_index]
+        session['cart'][key][subtotal_index] = qty * price 
     flash("Successfully added to cart.")
     return redirect("/cart")
     # return "Oops! This needs to be implemented!"
