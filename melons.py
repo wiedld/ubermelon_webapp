@@ -84,6 +84,13 @@ def show_login():
 def process_login():
     """TODO: Receive the user's login credentials located in the 'request.form'
     dictionary, look up the user, and store them in the session."""
+    #  test with emails in database:  amy@jaxworks.info, norma@realmix.com
+    if 'login' not in session:
+        session['login']={}
+    user_email = request.form.get("email")
+    pwd = request.form.get("password")
+    customer = model.get_customer_by_email(user_email)
+    print "db returns:", customer
     return "Oops! This needs to be implemented"
 
 
