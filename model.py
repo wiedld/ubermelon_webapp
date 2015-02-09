@@ -26,6 +26,7 @@ def connect():
     cursor = conn.cursor()
     return cursor
 
+
 def get_melons():
     """Query the database for the first 30 melons, wrap each row in a Melon object"""
     cursor = connect()
@@ -50,6 +51,7 @@ def get_melons():
     print melons
 
     return melons
+
 
 def get_melon_by_id(id):
     """Query for a specific melon in the database by the primary key"""
@@ -80,7 +82,7 @@ def get_customer_by_email(email):
                WHERE email = ?;"""
     cursor.execute(query, (email,))
     customer = cursor.fetchone()
-    if not row:
+    if not customer:
         return None
     else:
       return customer
